@@ -5,7 +5,7 @@
 [error] sbt.librarymanagement.ResolveException: Error downloading mysql:mysql-connector-java_2.11:8.0.25
 [error]   Not found
 [error]   Not found
-[error]   not found: C:\Users\sriiv\.ivy2\localmysql\mysql-connector-java_2.11\8.0.25\ivys\ivy.xml
+[error]   not found: C:\Users\falle\.ivy2\localmysql\mysql-connector-java_2.11\8.0.25\ivys\ivy.xml
 [error]   not found: https://repo1.maven.org/maven2/mysql/mysql-connector-java_2.11/8.0.25/mysql-connector-java_2.11-8.0.25.pom
 [error] 	at lmcoursier.CoursierDependencyResolution.unresolvedWarningOrThrow(CoursierDependencyResolution.scala:258)
 [error] 	at lmcoursier.CoursierDependencyResolution.$anonfun$update$38(CoursierDependencyResolution.scala:227)
@@ -40,5 +40,5 @@
 [error] (update) sbt.librarymanagement.ResolveException: Error downloading mysql:mysql-connector-java_2.11:8.0.25
 [error]   Not found
 [error]   Not found
-[error]   not found: C:\Users\sriiv\.ivy2\localmysql\mysql-connector-java_2.11\8.0.25\ivys\ivy.xml
+[error]   not found: C:\Users\falle\.ivy2\localmysql\mysql-connector-java_2.11\8.0.25\ivys\ivy.xml
 [error]   not found: https://repo1.maven.org/maven2/mysql/mysql-connector-java_2.11/8.0.25/mysql-connector-java_2.11-8.0.25.pom
