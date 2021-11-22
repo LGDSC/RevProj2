@@ -8,14 +8,13 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
 
 object AnalysisHome extends App {
-  val DATA_FILE = "Data/WPP2019_PopulationBySingleAgeSex_1950-2019.csv"
   def dataAnalysis(): Unit =
   {
     val spark = SparkSession
       .builder()
       .appName("Hello Hive")
       .config("spark.master", "local")
-      .enableHiveSupport()
+      //.enableHiveSupport()
       .getOrCreate()
     val sc = spark.sparkContext
     spark.sparkContext.setLogLevel("ERROR")
@@ -24,12 +23,14 @@ object AnalysisHome extends App {
       menuSelection = AnalysisMenu()
       menuSelection match {
         case 1 =>{
-          val df = spark.read.option("header","true").option("inferSchema", "true").csv(DATA_FILE)
-          df.persist(StorageLevel.MEMORY_ONLY)
+          val df = spark.read.option("header","true").option("inferSchema", "true").csv("data/WPP2019_TotalPopulationBySex.csv")
+          //df.persist(StorageLevel.MEMORY_ONLY)
           df.where(df("Time") === "2019").groupBy("LocID", "Location", "Time").avg("PopMale", "PopFemale").sort("Time").show(false)
-          df.groupBy("Time").sum("PopMale", "PopFemale").sort(df("Time").desc).show(false) // shows worldwide populations
         } // Please add query
-        case 2 => {}// Please add Query
+        case 2 => {
+          val df = spark.read.option("header","true").option("inferSchema", "true").csv("data/WPP2019_TotalPopulationBySex.csv")
+          df.where(df("Time") < "2022").groupBy("Time").sum("PopMale", "PopFemale").sort(df("Time").desc).show(false) // shows worldwide populations
+        }// Please add Query
         case 3 => {}// Please add query
         case 4 => {}// Please add query
         case 5 => {}// Please add query
