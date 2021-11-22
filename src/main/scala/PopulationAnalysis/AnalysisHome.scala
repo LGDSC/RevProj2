@@ -42,9 +42,9 @@ object AnalysisHome extends App {
         case 4 => {
         // shows the increase rate for each contry in % for males and females since 1950 
         df.createOrReplaceTempView("population")
-         spark_session("select location, concat(round((avg(popmale)-min(popmale))/min(popmale)*100,2), '%')" +
+         spark.sql("select location, concat(round((avg(popmale)-min(popmale))/min(popmale)*100,2), '%')" +
             " as increase_rate_male, concat(round((avg(popfemale)-min(popfemale))/min(popfemale)*100,2), '%')" +
-            " as increase_rate_female from population where time between '1950' and '2020' group by location having count(location)>1 order by location asc ")  
+            " as increase_rate_female from population where time between '1950' and '2020' group by location having count(location)>1 order by location asc ").show()  
         
         }// Please add query
         case 5 => {}// Please add query
