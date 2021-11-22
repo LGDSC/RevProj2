@@ -6,6 +6,8 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.storage.StorageLevel
+import org.apache.spark.sql.functions.{lower, upper}
+
 
 object AnalysisHome extends App {
   def dataAnalysis(): Unit =
@@ -18,20 +20,25 @@ object AnalysisHome extends App {
       .getOrCreate()
     val sc = spark.sparkContext
     spark.sparkContext.setLogLevel("ERROR")
+    val df = spark.read.option("header","true").option("inferSchema", "true").csv("data/WPP2019_TotalPopulationBySex.csv")
+    df.persist(StorageLevel.MEMORY_ONLY)
+
     var menuSelection = 0;
     do{
       menuSelection = AnalysisMenu()
       menuSelection match {
         case 1 =>{
-          val df = spark.read.option("header","true").option("inferSchema", "true").csv("data/WPP2019_TotalPopulationBySex.csv")
+          df.show()
           //df.persist(StorageLevel.MEMORY_ONLY)
-          df.where(df("Time") === "2019").groupBy("LocID", "Location", "Time").avg("PopMale", "PopFemale").sort("Time").show(false)
         } // Please add query
-        case 2 => {
-          val df = spark.read.option("header","true").option("inferSchema", "true").csv("data/WPP2019_TotalPopulationBySex.csv")
-          df.where(df("Time") < "2022").groupBy("Time").sum("PopMale", "PopFemale").sort(df("Time").desc).show(false) // shows worldwide populations
+        case 2 => { //variant set to medium because there's like 5-7 versions of predictive populations and we only need 1
+          df.where(df("Time") < "2022").where(df("Variant") === "Medium").groupBy("Time").sum("PopTotal").sort(df("Time").desc).show(false) // shows worldwide populations
         }// Please add Query
-        case 3 => {}// Please add query
+        case 3 => {
+          print("Which Country: ")
+          val country = readLine().toLowerCase // both column entry and user input are set to lowercase to ignore case of dataset
+          df.where(df("Time") < "2022").where(lower(df("Location")).like(s"%$country%")).where(df("Variant") === "Medium").select("Time", "Location", "PopTotal", "PopMale", "PopFemale").sort(df("Time").desc, df("Location")).show(500, false) // shows worldwide populations
+        }// Please add query
         case 4 => {}// Please add query
         case 5 => {}// Please add query
         case 6 => {}// Please add query
