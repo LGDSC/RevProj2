@@ -44,6 +44,13 @@ object AnalysisHome extends App {
          // df2.write.option("header", true).csv("data/case3")
         }// Please add query
         case 4 => {}// Please add query - Gerardo's Query
+        // shows the increase rate for each contry in % for males and females since 1950 
+        df.createOrReplaceTempView("population")
+         spark.sql("select location, concat(round((avg(popmale)-min(popmale))/min(popmale)*100,2), '%')" +
+            " as increase_rate_male, concat(round((avg(popfemale)-min(popfemale))/min(popfemale)*100,2), '%')" +
+            " as increase_rate_female from population where time between '1950' and '2020' group by location having count(location)>1 order by location asc ").show()  
+        
+        }// Please add query
         case 5 => {}// Please add query
         case 6 => {}// Please add query
         case 7 => {}// Please add query
@@ -59,6 +66,7 @@ object AnalysisHome extends App {
     println("Analysis Menu \n************")
     print(" 1. Select all  \n 2. World by year \n 3. growth of a country by year \n 4. Gerardo's Query\n 5. \n 6. \n 7.  \n"+
       " 8. \n 0. Exit \n ..Select your choice:  ")
+    print(" 1. Select all  \n 2. World by year \n 3. growth of a country by year \n 4. Increase rate by country from 1950 to 2020(male and female) \n 5. \n 6. \n 7.  \n 8. \n 0. Exit \n ..Select your choice:  ")
     readInt()
   }
 }
