@@ -43,7 +43,6 @@ object AnalysisHome extends App {
           df2.show(500, false)
          // df2.write.option("header", true).csv("data/case3")
         }// Please add query
-        case 4 => {}// Please add query - Gerardo's Query
         case 4 => {
         // shows the increase rate for each contry in % for males and females since 1950 
         df.createOrReplaceTempView("population")
