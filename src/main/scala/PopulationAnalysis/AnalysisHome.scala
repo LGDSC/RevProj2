@@ -4,7 +4,7 @@ import scala.io.StdIn.readInt
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
 import org.apache.spark.sql
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SaveMode, SparkSession}
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.sql.functions.{lower, upper}
 
@@ -32,14 +32,18 @@ object AnalysisHome extends App {
           //df.persist(StorageLevel.MEMORY_ONLY)
         } // Please add query
         case 2 => { //variant set to medium because there's like 5-7 versions of predictive populations and we only need 1
-          df.where(df("Time") < "2022").where(df("Variant") === "Medium").groupBy("Time").sum("PopTotal").sort(df("Time").desc).show(false) // shows worldwide populations
+          val df2 = df.where(df("Time") < "2022").where(df("Variant") === "Medium").groupBy("Time").sum("PopTotal").sort(df("Time").desc) // shows worldwide populations
+          df2.show(false)
+          //df2.write.option("header", true).format("csv").option("SaveMode", "overwrite").save("data/case2.csv")
         }// Please add Query
         case 3 => {
-          print("Which Country: ")
+          print("Population of Which Country: ")
           val country = readLine().toLowerCase // both column entry and user input are set to lowercase to ignore case of dataset
-          df.where(df("Time") < "2022").where(lower(df("Location")).like(s"%$country%")).where(df("Variant") === "Medium").select("Time", "Location", "PopTotal", "PopMale", "PopFemale").sort(df("Time").desc, df("Location")).show(500, false) // shows worldwide populations
+          val df2 = df.where(df("Time") < "2022").where(lower(df("Location")).like(s"%$country%")).where(df("Variant") === "Medium").select("Time", "Location", "PopTotal", "PopMale", "PopFemale").sort(df("Time").desc, df("Location")) // shows worldwide populations
+          df2.show(500, false)
+         // df2.write.option("header", true).csv("data/case3")
         }// Please add query
-        case 4 => {}// Please add query
+        case 4 => {}// Please add query - Gerardo's Query
         case 5 => {}// Please add query
         case 6 => {}// Please add query
         case 7 => {}// Please add query
@@ -53,7 +57,8 @@ object AnalysisHome extends App {
     //Need this menu to be updated
 
     println("Analysis Menu \n************")
-    print(" 1. Select all  \n 2. World by year \n 3. growth of a country by year \n 4. \n 5. \n 6. \n 7.  \n 8. \n 0. Exit \n ..Select your choice:  ")
+    print(" 1. Select all  \n 2. World by year \n 3. growth of a country by year \n 4. Gerardo's Query\n 5. \n 6. \n 7.  \n"+
+      " 8. \n 0. Exit \n ..Select your choice:  ")
     readInt()
   }
 }
