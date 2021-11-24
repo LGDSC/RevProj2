@@ -52,8 +52,11 @@ object AnalysisHome extends App {
         
         }// Please add query
         case 5 => {
-         val country = scala.io.StdIn.readLine("Please enter the country: ")
-          val year = scala.io.StdIn.readLine("Enter the year: ")
+         var country = scala.io.StdIn.readLine("Please enter the country: ")
+           if(country == "United States")
+            country = "Northern America"
+          
+          var year = scala.io.StdIn.readLine("Enter the year: ")
           spark.sql("Select * from population where location = '"+country+"' and Time = '"+year+"'  ").show()
           
         }// Please add query
