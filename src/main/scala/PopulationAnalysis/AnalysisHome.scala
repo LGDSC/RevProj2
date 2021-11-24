@@ -60,7 +60,10 @@ object AnalysisHome extends App {
           spark.sql("Select * from population where location = '"+country+"' and Time = '"+year+"'  ").show()
           
         }// Please add query
-        case 6 => {}// Please add query
+        case 6 => {
+            spark.sql("select location, max(poptotal) as 2020_totalpopulation from population where time = 2020 " +
+            "group by location having count(location)>1 order by location asc ").show()
+        }// Please add query
         case 7 => {}// Please add query
         case 0 => {println("Exiting Data Visualization....")}
       }
@@ -73,7 +76,7 @@ object AnalysisHome extends App {
 
     println("Analysis Menu \n************")
     print(" 1. Select all  \n 2. World by year \n 3. growth of a country by year \n 4. Increase rate by country from 1950 to 2020(male and female) \n"+
-      " 5. Retrieve data from a single country \n 6. \n 7.  \n 8. \n 0. Exit \n ..Select your choice:  ")
+      " 5. Retrieve data from a single country \n 6. Total population by country in 2020 \n 7.  \n 8. \n 0. Exit \n ..Select your choice:  ")
 
     readInt()
   }
