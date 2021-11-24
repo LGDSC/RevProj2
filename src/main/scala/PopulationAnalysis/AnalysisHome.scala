@@ -51,7 +51,12 @@ object AnalysisHome extends App {
             " as increase_rate_female from population where time between '1950' and '2020' group by location having count(location)>1 order by location asc ").show()  
         
         }// Please add query
-        case 5 => {}// Please add query
+        case 5 => {
+         val country = scala.io.StdIn.readLine("Please enter the country: ")
+          val year = scala.io.StdIn.readLine("Enter the year: ")
+          spark.sql("Select * from population where location = '"+country+"' and Time = '"+year+"'  ").show()
+          
+        }// Please add query
         case 6 => {}// Please add query
         case 7 => {}// Please add query
         case 0 => {println("Exiting Data Visualization....")}
@@ -65,7 +70,7 @@ object AnalysisHome extends App {
 
     println("Analysis Menu \n************")
     print(" 1. Select all  \n 2. World by year \n 3. growth of a country by year \n 4. Increase rate by country from 1950 to 2020(male and female) \n"+
-      " 5. \n 6. \n 7.  \n 8. \n 0. Exit \n ..Select your choice:  ")
+      " 5. Retrieve data from a single country \n 6. \n 7.  \n 8. \n 0. Exit \n ..Select your choice:  ")
 
     readInt()
   }
